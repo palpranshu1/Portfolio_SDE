@@ -21,28 +21,47 @@ app.use(
 );
 
 // CORS configuration
-const allowedOrigins = [
+const configuredOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   'http://127.0.0.1:5173',
   process.env.CLIENT_URL,
-].filter(Boolean);
+]
+  .filter(Boolean)
+  .map((origin) => origin.replace(/\/$/, ''));
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, server-to-server)
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Blocked by CORS policy'));
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, server-to-server)
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    const cleanOrigin = origin.replace(/\/$/, '');
+
+    // In development or local testing, permit any localhost or 127.0.0.1 port (e.g. 5173, 5174, 3000, etc.)
+    if (process.env.NODE_ENV !== 'production') {
+      if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(cleanOrigin)) {
+        return callback(null, true);
       }
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  })
-);
+    }
+
+    if (configuredOrigins.includes(cleanOrigin)) {
+      return callback(null, true);
+    }
+
+    // Rather than throwing an Error (which returns 500 without CORS headers),
+    // safely deny by passing false.
+    return callback(null, false);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // Request payload limit to prevent large payload attacks
 app.use(express.json({ limit: '50kb' }));

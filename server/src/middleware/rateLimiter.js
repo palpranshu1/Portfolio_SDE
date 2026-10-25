@@ -12,10 +12,10 @@ const generalLimiter = rateLimit({
   },
 });
 
-// Contact form limiter: max 5 submissions per 15 minutes per IP
+// Contact form limiter: 5 submissions per 15 mins in production, relaxed in dev
 const contactLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,
+  max: process.env.NODE_ENV === 'production' ? 5 : 50,
   standardHeaders: true,
   legacyHeaders: false,
   message: {

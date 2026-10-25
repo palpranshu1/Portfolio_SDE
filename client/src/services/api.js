@@ -1,4 +1,13 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+const getApiBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_BASE_URL;
+  if (typeof envUrl === 'string' && envUrl.trim() !== '') {
+    return envUrl.trim().replace(/\/$/, '');
+  }
+  // In development, target http://localhost:5000 directly; in production, use relative /api
+  return import.meta.env.DEV ? 'http://localhost:5000' : '';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 /**
  * Helper to get authorization headers

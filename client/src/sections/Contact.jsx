@@ -88,9 +88,14 @@ export default function Contact() {
       });
       setFormErrors({});
     } catch (error) {
+      const errorMsg =
+        error.message === 'Failed to fetch'
+          ? 'Unable to connect to the backend server. Please ensure the backend is running at http://localhost:5000 and CORS is allowed.'
+          : error.message || 'Failed to deliver message. Please try again or reach out via email directly.';
+
       setToast({
         type: 'error',
-        message: error.message || 'Failed to deliver message. Please try again or reach out via email directly.',
+        message: errorMsg,
       });
     } finally {
       setIsSubmitting(false);

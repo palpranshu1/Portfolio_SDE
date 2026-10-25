@@ -20,7 +20,7 @@ const startServer = async () => {
     }
 
     // 3. Start Express HTTP Server
-    const server = app.listen(PORT, () => {
+    const server = app.listen(PORT, '0.0.0.0', () => {
       logger.info(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
       logger.info(`Health check available at http://localhost:${PORT}/api/health`);
     });
