@@ -1,0 +1,19 @@
+{
+  "name": "pranshu-portfolio",
+  "version": "1.0.0",
+  "description": "Full-Stack Portfolio and Admin Dashboard for Pranshu Pal",
+  "scripts": {
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "build:client": "npm --prefix client run build",
+    "test:server": "npm --prefix server test",
+    "seed:admin": "npm --prefix server run seed:admin"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": ["portfolio", "mern", "full-stack", "developer"],
+  "author": "Pranshu Pal",
+  "license": "MIT"
+}
