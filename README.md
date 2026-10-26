@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Pranshu Pal — Professional Full-Stack Portfolio & Admin System
 
 A production-ready, full-stack portfolio website and private administration dashboard engineered for **Pranshu Pal** (Aspiring Software Engineer & MERN Stack Developer, B.Tech CSE '27 at GLA University).
@@ -297,3 +298,6 @@ Submits a new visitor message. Protected by rate limiting (5 req/15 min) and hon
 - **GitHub**: [github.com/palpranshu1](https://github.com/palpranshu1)  
 - **LeetCode**: [leetcode.com/u/Pranshu_pal](https://leetcode.com/u/Pranshu_pal/)  
 - **Education**: B.Tech CSE (2023–2027), GLA University, Mathura  
+=======
+# Portfolio_SDE
+>>>>>>> 7205c145c197428a83c6ac23507a7971521fbc46
