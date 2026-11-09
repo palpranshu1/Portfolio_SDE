@@ -1,21 +1,34 @@
+
 const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/pranshu_portfolio';
+    const mongoURI = process.env.MONGODB_URI;
+
+    if (!mongoURI) {
+      throw new Error('MONGODB_URI is missing in environment variables');
+    }
+
+    if (
+      !mongoURI.startsWith('mongodb://') &&
+      !mongoURI.startsWith('mongodb+srv://')
+    ) {
+      throw new Error('Invalid MongoDB connection string format');
+    }
+
     const conn = await mongoose.connect(mongoURI, {
-      autoIndex: true,
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 10000,
     });
 
-    console.log(`[Database] MongoDB Connected: ${conn.connection.host}`);
+    console.log(
+      `[Database] MongoDB Connected: ${conn.connection.host}`
+    );
+
     return conn;
   } catch (error) {
-    console.error(`[Database Error] Failed to connect to MongoDB: ${error.message}`);
-    // In production we exit on fatal DB failure; during dev or tests, caller can handle
-    if (process.env.NODE_ENV === 'production') {
-      process.exit(1);
-    }
+    console.error(
+      `[Database Error] ${error.message}`
+    );
     throw error;
   }
 };
