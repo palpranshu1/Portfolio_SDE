@@ -6,7 +6,9 @@ const connectDB = async () => {
     const mongoURI = process.env.MONGODB_URI;
 
     if (!mongoURI) {
-      throw new Error('MONGODB_URI is missing in environment variables');
+      throw new Error(
+        'MONGODB_URI is missing in environment variables'
+      );
     }
 
     if (
@@ -17,7 +19,7 @@ const connectDB = async () => {
     }
 
     const conn = await mongoose.connect(mongoURI, {
-      serverSelectionTimeoutMS: 10000,
+      serverSelectionTimeoutMS: 10000
     });
 
     console.log(
@@ -25,10 +27,14 @@ const connectDB = async () => {
     );
 
     return conn;
+
   } catch (error) {
-    console.error(
-      `[Database Error] ${error.message}`
-    );
+    console.error('[Database Error]', {
+      name: error.name,
+      code: error.code,
+      message: error.message
+    });
+
     throw error;
   }
 };
